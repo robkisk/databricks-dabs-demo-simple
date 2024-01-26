@@ -1,0 +1,21 @@
+resources:
+  jobs:
+    wheel_job:
+      name: "[${bundle.target}] Poetry Job with module imports"
+      tasks:
+        - task_key: wheel-task
+          existing_cluster_id: <add_existing_cluster_id_here>
+          python_wheel_task:
+            entry_point: main
+            package_name: my_package
+          libraries:
+            - whl: ../dist/*.whl
+
+      # job_clusters:
+      #   - job_cluster_key: job_cluster
+      #     new_cluster:
+      #       spark_version: 14.2.x-cpu-ml-scala2.12
+      #       node_type_id: Standard_D3_v2
+      #       autoscale:
+      #         min_workers: 1
+      #         max_workers: 4

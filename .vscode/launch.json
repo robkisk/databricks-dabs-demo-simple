@@ -1,0 +1,82 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "dbcn - ml",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "internalConsole",
+            "justMyCode": false,
+            "envFile": "${workspaceFolder}/rk.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${env:PYTHONPATH}",
+                "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "2",
+                "DATABRICKS_CONFIG_PROFILE": "fe-east-ml",
+                // "SPARK_REMOTE": "sc://<instance_url>:443/;token=<pat>;x-databricks-cluster-id=<cluster>,
+            },
+            "args": [
+                "--dryrun",
+                "True",
+                "--lookback",
+                "12",
+            ]
+        },
+        {
+            "name": "db-azml",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "internalConsole",
+            "justMyCode": true,
+            "envFile": "${workspaceFolder}/rk.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${env:PYTHONPATH}",
+                "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "2",
+                "DATABRICKS_CONFIG_PROFILE": "azml",
+                // "SPARK_REMOTE": "sc://<instance_url>:443/;token=<pat>;x-databricks-cluster-id=<cluster>,
+            },
+        },
+        {
+            "name": "db-azph",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "internalConsole",
+            "justMyCode": true,
+            "envFile": "${workspaceFolder}/rk.env",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${env:PYTHONPATH}",
+                "PYDEVD_WARN_SLOW_RESOLVE_TIMEOUT": "2",
+                "DATABRICKS_CONFIG_PROFILE": "azph",
+                // "SPARK_REMOTE": "sc://<instance_url>:443/;token=<pat>;x-databricks-cluster-id=<cluster>,
+            },
+            // "args": [
+            //   "--lookback",
+            //   "3",
+            //   "--table",
+            //   "prod.workload_insights"
+            // ]
+        },
+        {
+            "name": "Run Notebook on Databricks as Workflow",
+            "type": "databricks-workflow",
+            "request": "launch",
+            "program": "${file}",
+            "parameters": {
+                "arg1": 12,
+                "arg2": "string",
+            },
+        },
+        {
+            "type": "databricks",
+            "request": "launch",
+            "name": "Unit Tests (on Databricks)",
+            "program": "${workspaceFolder}/pytest_databricks.py",
+            "args": [
+                "."
+            ],
+            "env": {}
+        }
+    ]
+}

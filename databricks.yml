@@ -1,0 +1,37 @@
+bundle:
+  name: my-wheel-bundle
+
+# this can also be setup.py
+artifacts:
+  default:
+    type: whl
+    build: poetry build
+    path: .
+
+# uncomment these as needed for testing
+include:
+  - ./resources/notebook_task.yml
+  # - ./resources/spark_python_task.yml
+  # - ./resources/python_wheel_task.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: <add_databrcicks_host_url>
+    run_as:
+      user_name: <add_databricks_user_name>
+
+  qa:
+    workspace:
+      host: <add_databrcicks_host_url>
+    run_as:
+      user_name: <add_databricks_user_name>
+
+  prod:
+    # mode: production
+    workspace:
+      host: <add_databrcicks_host_url>
+    run_as:
+      user_name: <add_databricks_user_name>

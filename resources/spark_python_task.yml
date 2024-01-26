@@ -1,0 +1,19 @@
+resources:
+  jobs:
+    example_python_task:
+      name: "Python Task Example"
+      tasks:
+        - task_key: spark-python-task
+          existing_cluster_id: <add_existing_cluster_id_here>
+          # job_cluster_key: job_cluster
+          spark_python_task:
+            python_file: ../src/my_package/main.py
+
+      # job_clusters:
+      #   - job_cluster_key: job_cluster
+      #     new_cluster:
+      #       spark_version: 14.2.x-cpu-ml-scala2.12
+      #       node_type_id: Standard_D3_v2
+      #       autoscale:
+      #         min_workers: 1
+      #         max_workers: 4

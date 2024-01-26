@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "my_package"
+version = "0.0.1"
+description = "Example package to demonstrate using Poetry with Databricks Asset Bundles."
+authors = [""]
+readme = "README.md"
+packages = [{ include = "my_package", from = "src" }]
+
+[tool.poetry.scripts]
+main = "my_package.main:main"
+# python_wheel_poetry = "python_wheel_poetry.hello:hello"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+cowsay = "^6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
