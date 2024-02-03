@@ -40,12 +40,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, OneHotEncoder, StandardScaler
 from xgboost import XGBRegressor
 
-mlflow.set_tracking_uri(
-    "databricks"
-)  # Needed for tracking to Remote MLflow Tracking Server on Databricks
-mlflow.set_registry_uri(
-    "databricks-uc"
-)  # Needed for registering model to Unity Catalog
+# Needed for working remotely with Databricks MLFlow and Unity Catalog
+mlflow.set_tracking_uri("databricks")
+mlflow.set_registry_uri("databricks-uc")
 mlflow.autolog()
 
 # COMMAND ----------
