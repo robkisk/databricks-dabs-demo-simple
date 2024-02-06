@@ -40,13 +40,11 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, OneHotEncoder, StandardScaler
 from xgboost import XGBRegressor
 
-# Needed for working remotely with Databricks MLFlow and Unity Catalog
 mlflow.set_tracking_uri("databricks")
 mlflow.set_registry_uri("databricks-uc")
 mlflow.autolog()
 
 # COMMAND ----------
-# Global Variables
 EXPERIMENT_PATH = "<path_to_experiment>"
 CATALOG_NAME = "<catalog_name>"
 SCHEMA_NAME = "<schema_name>"
@@ -57,19 +55,27 @@ REGISTERED_MODEL_NAME = f"{CATALOG_NAME}.{SCHEMA_NAME}.{MODEL_NAME}"
 mlflow.set_experiment(EXPERIMENT_PATH)
 
 # COMMAND ----------
-# Example raw input data from Delta
-# Change the path to the location of your data
-from get_spark import GetSpark
+# from get_spark import GetSpark
 
-# This leverages DatabricksSession and dbconnect to connect to a Databricks cluster
-spark = GetSpark().init_spark(eager=True)
+# spark = GetSpark().init_spark(eager=True)
 
-nyc_taxi_pdf = (
-    spark.read.format("delta")
-    .load("dbfs:/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
-    .toPandas()
+# nyc_taxi_pdf = (
+#     spark.read.format("delta")
+#     .load("dbfs:/databricks-datasets/nyctaxi-with-zipcodes/subsampled")
+#     .toPandas()
+# )
+# nyc_taxi_pdf
+
+
+# COMMAND ----------
+nyc_taxi_pdf = pd.read_csv("./data/nyctaxi_zipcode.csv")
+
+nyc_taxi_pdf["tpep_pickup_datetime"] = pd.to_datetime(
+    nyc_taxi_pdf["tpep_pickup_datetime"]
 )
-nyc_taxi_pdf
+nyc_taxi_pdf["tpep_dropoff_datetime"] = pd.to_datetime(
+    nyc_taxi_pdf["tpep_dropoff_datetime"]
+)
 
 
 # COMMAND ----------
@@ -186,6 +192,7 @@ def transformer_fn() -> Pipeline:
 
 
 # COMMAND ----------
+
 # MAGIC %md
 # MAGIC
 # MAGIC ## Train model
@@ -254,11 +261,13 @@ X_train, X_val, X_test, y_train, y_val, y_test = split_data(
 run_id = train_model(X_train, y_train)
 
 # COMMAND ----------
+
 model_version = mlflow.register_model(
     model_uri=f"runs:/{run_id}/model", name=REGISTERED_MODEL_NAME
 )
 
 # COMMAND ----------
+
 from mlflow import MlflowClient
 
 client = MlflowClient()
@@ -277,3 +286,5 @@ champion_model = mlflow.pyfunc.load_model(model_uri)
 
 # COMMAND ----------
 print(champion_model.predict(X_test)[:100])
+
+# COMMAND ----------
