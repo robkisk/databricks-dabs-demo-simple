@@ -286,5 +286,3 @@ champion_model = mlflow.pyfunc.load_model(model_uri)
 
 # COMMAND ----------
 print(champion_model.predict(X_test)[:100])
-
-# COMMAND ----------
